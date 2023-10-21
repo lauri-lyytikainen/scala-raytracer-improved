@@ -2,11 +2,13 @@ package Rendering
 
 import scalafx.scene.canvas.GraphicsContext
 
+import java.awt.image.BufferedImage
 import scala.collection.mutable.Stack
 import scalafx.scene.paint.Color
 import Gui.Settings
 import RayMath.{Ray, RayHit, Vector3D}
 import Solids.Sphere
+import scalafx.embed.swing.SwingFXUtils
 
 import scala.collection.mutable
 object Renderer:
@@ -35,14 +37,14 @@ object Renderer:
     val chunkWidth = w / Settings.RENDERING_CHUNKS
     val chunkHeight = h / Settings.RENDERING_CHUNKS
 
-    val pixelWriter = gc.getPixelWriter
-
     //Create a mutable data structure to store the pixel colors
-    val pixelColors = Array.ofDim[Color](w, h)
+
+    //create a buffered image to store the pixels
+    val bufferedImage = new BufferedImage(w,h, BufferedImage.TYPE_INT_RGB)
 
     class RenderThread(startX: Int, startY: Int, w: Int, h: Int, frameCount: Int) extends Thread:
       override def run(): Unit =
-        renderChunk(pixelColors, startX, startY, w, h, frameCount)
+        renderChunk(bufferedImage, startX, startY, w, h, frameCount)
 
     // Make a stack of regions to render
     val regions = mutable.Stack[Array[Int]]()
@@ -71,17 +73,13 @@ object Renderer:
     // Wait for all threads to finish
     threads.foreach(_.join())
 
-    // Render the pixels
-    for
-      startX <- 0 until w
-      startY <- 0 until h
-    do
-      gc.fill = pixelColors(startX)(startY)
-      gc.fillRect(startX * Settings.VIEWPORT_PIXEL_SIZE, startY * Settings.VIEWPORT_PIXEL_SIZE, Settings.VIEWPORT_PIXEL_SIZE, Settings.VIEWPORT_PIXEL_SIZE)
+    //draw the buffered image
+    gc.setGlobalAlpha(1 - (currentFrame / Settings.IMAGE_SAMPLES.toDouble))
+    gc.setImageSmoothing(true)
+    gc.drawImage(SwingFXUtils.toFXImage(bufferedImage, null), 0, 0, Settings.VIEWPORT_WIDTH, Settings.VIEWPORT_HEIGHT)
 
 
-
-  def renderChunk(pixelColors: Array[Array[Color]], startX: Int, startY: Int, w: Int, h: Int, frameCount: Int): Unit =
+  def renderChunk(bufferedImage: BufferedImage, startX: Int, startY: Int, w: Int, h: Int, frameCount: Int): Unit =
     val coords = for
       x <- startX until startX + w
       y <- startY until startY + h
@@ -92,12 +90,12 @@ object Renderer:
     )
 
     colors.toArray.foreach((pos, col) =>
-      val pxCol = col.clamp(0, 1)
-      //gc.fill = Color(pxCol.x, pxCol.y, pxCol.z, 1 - (0 / Settings.IMAGE_SAMPLES.toDouble))
-      //Set the blend mode to add
-      //gc.fillRect(pos._1 * Settings.VIEWPORT_PIXEL_SIZE, pos._2 * Settings.VIEWPORT_PIXEL_SIZE, Settings.VIEWPORT_PIXEL_SIZE, Settings.VIEWPORT_PIXEL_SIZE)
-      pixelColors(pos._1)(pos._2) = Color(pxCol.x, pxCol.y, pxCol.z, 1 - (frameCount / Settings.IMAGE_SAMPLES.toDouble)
-      )
+      val pxCol: Vector3D = col.clamp(0, 1)
+
+      // Convert the color to an int using bit shifting in BRGA format
+      val intColor = (pxCol.x * 255).toInt << 16 | (pxCol.y * 255).toInt << 8 | (pxCol.z * 255).toInt << 0 | 0xFF << 24
+
+      bufferedImage.setRGB(pos._1, pos._2, intColor)
     )
 
 

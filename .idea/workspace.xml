@@ -5,28 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b558adb7-b2dd-44fa-abc6-cd32f5fc7845" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scala_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/build.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Gui/Settings.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Gui/Viewport.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/RayMath/Ray.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/RayMath/RayHit.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/RayMath/Vector3D.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Rendering/Camera.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Rendering/Material.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Rendering/Renderer.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Rendering/World.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Solids/Solid.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Solids/Sphere.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Gui/Settings.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Gui/Settings.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Rendering/Renderer.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Rendering/Renderer.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,13 +51,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/brook/Desktop/scala-raytracer-improved/src/main/scala/RayMath",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
     "scala_project_settings_configurable.last_selected_tab_index": "0",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
   <component name="RecentsManager">
