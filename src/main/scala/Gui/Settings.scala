@@ -9,13 +9,13 @@ object Settings:
   val VIEWPORT_WIDTH: Int = 1920 - 16
   val VIEWPORT_HEIGHT: Int = 1080 - 39
   val TARGET_FPS = 100
-  val VIEWPORT_PIXEL_SIZE = 4
+  val VIEWPORT_PIXEL_SIZE = 3
 
   val RENDERING_CHUNKS = 1
   val RENDERING_THREADS = 1
 
   val MAX_BOUNCE_LIMIT = 5
-  val RAYS_PER_PIXEL = 10
+  val RAYS_PER_PIXEL = 5
 
   val IMAGE_SAMPLES = 10
 

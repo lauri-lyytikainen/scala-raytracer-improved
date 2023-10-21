@@ -7,7 +7,7 @@ import scala.collection.mutable.Stack
 import scalafx.scene.paint.Color
 import Gui.Settings
 import RayMath.{Ray, RayHit, Vector3D}
-import Solids.Sphere
+import Solids.{Sphere, Triangle}
 import scalafx.embed.swing.SwingFXUtils
 
 import scala.collection.mutable
@@ -25,6 +25,8 @@ object Renderer:
   world.addSolid(new Sphere(Vector3D(0,0,30),1, greenMaterial))
   world.addSolid(new Sphere(Vector3D(2,0,35),1, blueMaterial))
   world.addSolid(new Sphere(Vector3D(-2,0,30),1, redMaterial))
+
+  world.addSolid(new Triangle(Vector3D(2,0,30), Vector3D(0,2,30), Vector3D(-2,0,30), whiteMaterial))
 
   world.addSolid(new Sphere(Vector3D(0,-51,30),50, whiteMaterial))
 
@@ -76,12 +78,6 @@ object Renderer:
     threads.foreach(_.join())
 
     //draw the buffered image
-
-
-    //Calculate the current alpha using a logarithmic function and the current frame
-    // The function should start around 1 and end around 0
-
-
     gc.setGlobalAlpha(1 - Math.log(currentFrame) / Math.log(Settings.IMAGE_SAMPLES))
     gc.setImageSmoothing(Settings.IMAGE_SMOOTHING)
     gc.drawImage(SwingFXUtils.toFXImage(bufferedImage, null), 0, 0, Settings.VIEWPORT_WIDTH, Settings.VIEWPORT_HEIGHT)
