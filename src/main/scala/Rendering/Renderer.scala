@@ -31,13 +31,15 @@ object Renderer:
   world.addSolid(new Sphere(Vector3D(3,5,25),1, lightMaterial))
 
   def render(gc: GraphicsContext, currentFrame: Int): Unit =
+    //Time the rendering
+
+    val startTime = System.nanoTime()
+
     val w = (Settings.VIEWPORT_WIDTH / Settings.VIEWPORT_PIXEL_SIZE).toInt
     val h = (Settings.VIEWPORT_HEIGHT / Settings.VIEWPORT_PIXEL_SIZE).toInt
 
     val chunkWidth = w / Settings.RENDERING_CHUNKS
     val chunkHeight = h / Settings.RENDERING_CHUNKS
-
-    //Create a mutable data structure to store the pixel colors
 
     //create a buffered image to store the pixels
     val bufferedImage = new BufferedImage(w,h, BufferedImage.TYPE_INT_RGB)
@@ -75,29 +77,25 @@ object Renderer:
 
     //draw the buffered image
     gc.setGlobalAlpha(1 - (currentFrame / Settings.IMAGE_SAMPLES.toDouble))
-    gc.setImageSmoothing(true)
+    gc.setImageSmoothing(Settings.IMAGE_SMOOTHING)
     gc.drawImage(SwingFXUtils.toFXImage(bufferedImage, null), 0, 0, Settings.VIEWPORT_WIDTH, Settings.VIEWPORT_HEIGHT)
 
+
+    val endTime = System.nanoTime()
+    val timeTaken = (endTime - startTime) / 1000000.0
+    println(s"Frame $currentFrame took $timeTaken ms")
 
   def renderChunk(bufferedImage: BufferedImage, startX: Int, startY: Int, w: Int, h: Int, frameCount: Int): Unit =
     val coords = for
       x <- startX until startX + w
       y <- startY until startY + h
-    yield (x, y)
-
-    val colors = coords.map(c =>
-      (c, averagePixelColor(c._1, c._2))
-    )
-
-    colors.toArray.foreach((pos, col) =>
-      val pxCol: Vector3D = col.clamp(0, 1)
+    do
+      val pxCol = averagePixelColor(x, y).clamp(0, 1)
 
       // Convert the color to an int using bit shifting in BRGA format
       val intColor = (pxCol.x * 255).toInt << 16 | (pxCol.y * 255).toInt << 8 | (pxCol.z * 255).toInt << 0 | 0xFF << 24
 
-      bufferedImage.setRGB(pos._1, pos._2, intColor)
-    )
-
+      bufferedImage.setRGB(x, y, intColor)
 
   private def averagePixelColor(x: Int, y: Int): Vector3D =
     // Repeat for Settings.RAYS_PER_PIXEL times
@@ -132,8 +130,6 @@ object Renderer:
         if material.specularProbability > Math.random() then
           isSpecularBounce = 1
 
-
-
         ray.direction = diffuseDir.lerp(specularDir, material.smoothness * isSpecularBounce).normalize
 
         val emittedLight = material.emissionColor * material.emissionStrength
@@ -142,11 +138,11 @@ object Renderer:
         bounce += 1
       else
         maxBounces = -1
-        incomingLight = rayColor * getEnviromentColor(ray) + incomingLight
+        incomingLight = rayColor * getEnvironmentColor(ray) + incomingLight
     incomingLight
 
 
-  private def getEnviromentColor(ray: Ray): Vector3D =
+  private def getEnvironmentColor(ray: Ray): Vector3D =
     Settings.BACKGROUND_COLOR
 
   private def randomDiffuseDirection(normal: Vector3D): Vector3D =
