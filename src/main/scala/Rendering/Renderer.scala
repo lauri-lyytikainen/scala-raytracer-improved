@@ -76,7 +76,13 @@ object Renderer:
     threads.foreach(_.join())
 
     //draw the buffered image
-    gc.setGlobalAlpha(1 - (currentFrame / Settings.IMAGE_SAMPLES.toDouble))
+
+
+    //Calculate the current alpha using a logarithmic function and the current frame
+    // The function should start around 1 and end around 0
+
+
+    gc.setGlobalAlpha(1 - Math.log(currentFrame) / Math.log(Settings.IMAGE_SAMPLES))
     gc.setImageSmoothing(Settings.IMAGE_SMOOTHING)
     gc.drawImage(SwingFXUtils.toFXImage(bufferedImage, null), 0, 0, Settings.VIEWPORT_WIDTH, Settings.VIEWPORT_HEIGHT)
 
@@ -105,8 +111,8 @@ object Renderer:
 
     var totalColor = Vector3D(0,0,0)
     for i <- 0 until Settings.RAYS_PER_PIXEL do
-      totalColor = totalColor + calculatePixelColor(x, y) * (1.0 / Settings.RAYS_PER_PIXEL)
-    totalColor
+      totalColor = totalColor + calculatePixelColor(x, y)
+    totalColor / Settings.RAYS_PER_PIXEL
 
   private def calculatePixelColor(x: Int, y: Int): Vector3D =
     val ray = world.camera.getRay(x, y)
@@ -121,8 +127,8 @@ object Renderer:
       if rayHit.isDefined then
 
         ray.origin = rayHit.get.hitPos + rayHit.get.normal * 0.000001
-        val diffuseDir = (rayHit.get.normal + randomDiffuseDirection(rayHit.get.normal)).normalize
-        val specularDir = ray.direction.reflect(rayHit.get.normal).normalize
+        val diffuseDir = (rayHit.get.normal + randomDiffuseDirection(rayHit.get.normal)) // FIXME: Might need normalization
+        val specularDir = ray.direction.reflect(rayHit.get.normal)
 
         val material = rayHit.get.solid.material
 

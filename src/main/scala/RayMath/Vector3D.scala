@@ -29,6 +29,7 @@ case class Vector3D(x: Double, y: Double, z: Double) {
   //get a vector in the direction of this vector that has a length of 1
   def normalize = if (length != 0) Vector3D(this.x / length, this.y / length, this.z / length) else Vector3D(0, 0, 0)
 
+
   // Distamce between two vectors
   def distance(other: Vector3D) = (this - other).length
 
@@ -59,7 +60,6 @@ case class Vector3D(x: Double, y: Double, z: Double) {
       y = if (this.y < min) min else if (this.y > max) max else this.y,
       z = if (this.z < min) min else if (this.z > max) max else this.z
     )
-
   def lerp(other: Vector3D, t: Double): Vector3D =
     Vector3D(
       x = this.x + (other.x - this.x) * t,
