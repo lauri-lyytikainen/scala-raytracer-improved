@@ -68,11 +68,12 @@ case class Vector3D(x: Double, y: Double, z: Double) {
     )
 
   def cross(other: Vector3D): Vector3D =
-    Vector3D(
+  Vector3D(
       x = this.y * other.z - this.z * other.y,
       y = this.z * other.x - this.x * other.z,
       z = this.x * other.y - this.y * other.x
     )
+
 
   override def toString =
     "x: "+this.x + ", y: "+this.y + ", z: "+this.z

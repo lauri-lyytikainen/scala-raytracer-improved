@@ -9,7 +9,7 @@ import RayMath.{Ray, RotationMatrix3D, Vector3D}
  * @param fov The field of view of the camera
  */
 
-class Camera(initialPos: Vector3D, private val fov: Int):
+class Camera(initialPos: Vector3D, private val fov: Double):
   var pos   = initialPos.copy
   var pitch: Double = 0
   var yaw: Double   = 0
@@ -31,8 +31,8 @@ class Camera(initialPos: Vector3D, private val fov: Int):
     // Use the aspectratio and the fov to calculate vectors that point to the top left corner of the viewport
 
     val sideLength = Math.sin(Math.PI / 2) * focalDistance / Math.sin((Math.PI - this.fov) / 2)
-    val leftEdge = RotationMatrix3D(0,fov/2,0) * Vector3D(0,0,sideLength)
-    var topEdge = RotationMatrix3D(fov/2,0,0) * Vector3D(0,0,sideLength)
+    val leftEdge = RotationMatrix3D(0,-fov/2,0) * Vector3D(0,0,sideLength)
+    var topEdge = RotationMatrix3D(-fov/2,0,0) * Vector3D(0,0,sideLength)
     topEdge = Vector3D(topEdge.x, topEdge.y * aspectRatio, topEdge.z)
 
     val topLeft = leftEdge + Vector3D(0.0, topEdge.y, 0.0)
@@ -44,10 +44,18 @@ class Camera(initialPos: Vector3D, private val fov: Int):
 
     var point = rm * (topLeft + (topRight - topLeft) * pX + (bottomLeft - topLeft) * pY)
 
-    point = point + Renderer.randomDirection() * 0.01
+    var blurAmount = 0.01
+    if Settings.SHOW_NORMALS then
+      blurAmount = 0.0
+
+    point = point + Renderer.randomDirection() * blurAmount
 
 
-    val origin = pos + Renderer.randomDirection() * dofBlurriness
+    var dofBlur = dofBlurriness
+    if Settings.SHOW_NORMALS then
+      dofBlur = 0.0
+
+    val origin = pos + Renderer.randomDirection() * dofBlur
 
     val dir = (point - origin).normalize
 

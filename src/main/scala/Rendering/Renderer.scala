@@ -7,30 +7,13 @@ import scala.collection.mutable.Stack
 import scalafx.scene.paint.Color
 import Gui.Settings
 import RayMath.{Ray, RayHit, Vector3D}
-import Solids.{Sphere, Triangle}
+import Solids.{Sphere, Triangle, Model}
 import scalafx.embed.swing.SwingFXUtils
 
 import scala.collection.mutable
 object Renderer:
 
-  private val world = new World()
-  world.camera.focalDistance = 30
-
-  val redMaterial = new Material(Vector3D(0.900,0.125,0.125))
-  val blueMaterial = new Material(Vector3D(0.125,0.125,0.900))
-  val greenMaterial = new Material(Vector3D(0.125,0.900,0.125), Vector3D(0,0,0), 0, 0.8, 0.6, Vector3D(1,1,1))
-  val whiteMaterial = new Material(Vector3D(0.9,0.9,0.9))
-  val lightMaterial = new Material(Vector3D(0,0,0), Vector3D(0.9,0.8,0.6), 5)
-
-  world.addSolid(new Sphere(Vector3D(0,0,30),1, greenMaterial))
-  world.addSolid(new Sphere(Vector3D(2,0,35),1, blueMaterial))
-  world.addSolid(new Sphere(Vector3D(-2,0,30),1, redMaterial))
-
-  world.addSolid(new Triangle(Vector3D(2,0,30), Vector3D(0,2,30), Vector3D(-2,0,30), whiteMaterial))
-
-  world.addSolid(new Sphere(Vector3D(0,-51,30),50, whiteMaterial))
-
-  world.addSolid(new Sphere(Vector3D(3,5,25),1, lightMaterial))
+  var world: Option[World] = None
 
   def render(gc: GraphicsContext, currentFrame: Int): Unit =
     //Time the rendering
@@ -106,12 +89,15 @@ object Renderer:
     // Divide the total color by the amount of rays
 
     var totalColor = Vector3D(0,0,0)
-    for i <- 0 until Settings.RAYS_PER_PIXEL do
+    var limit = Settings.RAYS_PER_PIXEL
+    if Settings.SHOW_NORMALS then
+      limit = 1
+    for i <- 0 until limit do
       totalColor = totalColor + calculatePixelColor(x, y)
-    totalColor / Settings.RAYS_PER_PIXEL
+    totalColor / limit
 
   private def calculatePixelColor(x: Int, y: Int): Vector3D =
-    val ray = world.camera.getRay(x, y)
+    val ray = world.get.camera.getRay(x, y)
 
     var incomingLight = Vector3D(0,0,0)
     var rayColor = Vector3D(1,1,1)
@@ -119,8 +105,12 @@ object Renderer:
     var maxBounces = Settings.MAX_BOUNCE_LIMIT
     var bounce = 0
     while(bounce < maxBounces) do
-      val rayHit = world.traceRay(ray)
+      val rayHit = world.get.traceRay(ray)
       if rayHit.isDefined then
+
+        if Settings.SHOW_NORMALS then
+          val norm = rayHit.get.normal * 0.5 + Vector3D(0.5, 0.5, 0.5)
+          return norm
 
         ray.origin = rayHit.get.hitPos + rayHit.get.normal * 0.000001
         val diffuseDir = (rayHit.get.normal + randomDiffuseDirection(rayHit.get.normal)) // FIXME: Might need normalization

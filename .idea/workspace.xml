@@ -5,11 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b558adb7-b2dd-44fa-abc6-cd32f5fc7845" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Solids/Triangle.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/recources/test.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/Solids/Model.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Gui/Settings.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Gui/Settings.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Gui/Viewport.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Gui/Viewport.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/RayMath/Vector3D.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/RayMath/Vector3D.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Rendering/Camera.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Rendering/Camera.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Rendering/Renderer.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Rendering/Renderer.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Rendering/World.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Rendering/World.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Solids/Sphere.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Solids/Sphere.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Solids/Triangle.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Solids/Triangle.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +71,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\brook\Desktop\scala-raytracer-improved\src\main\scala\RayMath" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\brook\Desktop\scala-raytracer-improved\src\main" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Solids" />

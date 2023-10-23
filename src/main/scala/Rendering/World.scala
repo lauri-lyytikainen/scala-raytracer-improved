@@ -14,7 +14,7 @@ import scala.collection.mutable.Buffer
  */
 
 class World():
-  val camera = new Camera(new Vector3D(0, 0, 0), 50)
+  val camera = new Camera(new Vector3D(0, 0, 0), Math.toRadians(50))
   
   private val solids = mutable.Buffer[Solid]()
 

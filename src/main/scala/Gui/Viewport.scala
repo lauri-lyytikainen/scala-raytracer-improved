@@ -7,14 +7,29 @@ import scalafx.scene.Scene
 import scalafx.scene.canvas.{Canvas, GraphicsContext}
 import scalafx.scene.layout.{BorderPane, HBox}
 import scalafx.scene.paint.Color
-
 import Gui.Settings
-import Rendering.Renderer
+import RayMath.{RotationMatrix3D, Vector3D}
+import Rendering.{Material, Renderer, World}
+import Solids.{Model, Sphere, Triangle}
 object Viewport extends JFXApp3:
   private val windowWidth = Settings.WINDOW_WIDTH
   private val windowHeight = Settings.WINDOW_HEIGHT
 
   private var currentFrame = 0
+
+  val world = new World()
+  world.camera.focalDistance = 5
+  world.camera.dofBlurriness = 0
+
+  val greenMaterial = new Material(Vector3D(0.125, 0.900, 0.125), Vector3D(0, 0, 0), 0, 0.8, 0.6, Vector3D(1, 1, 1))
+  val lightMaterial = new Material(Vector3D(0, 0, 0), Vector3D(0.9, 0.8, 0.6), 5)
+
+  world.addSolid(new Sphere(Vector3D(0,0,5),1, greenMaterial))
+  world.addSolid(new Sphere(Vector3D(3, 5, 25), 1, lightMaterial))
+
+  Renderer.world = Some(world)
+
+
   private def tick(gc: GraphicsContext): Unit =
     Renderer.render(gc, currentFrame)
     currentFrame += 1

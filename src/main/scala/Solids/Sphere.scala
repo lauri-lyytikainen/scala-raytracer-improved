@@ -11,7 +11,7 @@ import scalafx.scene.paint.Color
  * @param material The material of the sphere
  */
 
-class Sphere(initialPosition: Vector3D, val radius: Double, material: Material) extends Solid(initialPosition, material):
+class Sphere(initialPosition: Vector3D, var radius: Double, material: Material) extends Solid(initialPosition, material):
 
   override def calculateIntersection(ray: Ray): Option[Vector3D] =
     val t = (this.position - ray.origin).dot(ray.direction)
