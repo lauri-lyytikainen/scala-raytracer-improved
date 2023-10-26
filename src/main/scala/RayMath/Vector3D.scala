@@ -1,44 +1,50 @@
 package RayMath
 
+import scala.annotation.targetName
 import scala.math.*
-/*
-* The Vector3D class is a data type that contains all necessary vector operations for vector calculations in this program
-*/
+/**
+ * A 3D vector class
+ * @param x the x component of the vector
+ * @param y the y component of the vector
+ * @param z the z component of the vector
+ */
 case class Vector3D(x: Double, y: Double, z: Double) {
 
   //add two vectors together
-  def +(other: Vector3D) = Vector3D(this.x + other.x, this.y + other.y, this.z + other.z)
+  @targetName("plus")
+  def +(other: Vector3D): Vector3D = Vector3D(this.x + other.x, this.y + other.y, this.z + other.z)
 
   //get the difference of two vectors
-  def -(other: Vector3D) = Vector3D(this.x - other.x, this.y - other.y, this.z - other.z)
+  @targetName("minus")
+  def -(other: Vector3D): Vector3D = Vector3D(this.x - other.x, this.y - other.y, this.z - other.z)
 
-  //multiply this vector by a double or a set of doubles
-  def *(double: Double) = Vector3D(this.x * double, this.y * double, this.z * double)
+  //multiply this vector by a double
+  @targetName("times")
+  def *(double: Double): Vector3D = Vector3D(this.x * double, this.y * double, this.z * double)
 
-  def *(other: Vector3D) = Vector3D(this.x * other.x, this.y * other.y, this.z * other.z)
+  @targetName("timesVector")
+  def *(other: Vector3D): Vector3D = Vector3D(this.x * other.x, this.y * other.y, this.z * other.z)
 
   //divide this vector by a double
-  def /(double: Double) = Vector3D(this.x / double, this.y / double, this.z / double)
-
-  //new vector with values forced with x, y or z
-  def force(x: Option[Double], y: Option[Double], z: Option[Double]) = Vector3D(x.getOrElse(this.x), y.getOrElse(this.y), z.getOrElse(this.z))
+  @targetName("divide")
+  def /(double: Double): Vector3D = Vector3D(this.x / double, this.y / double, this.z / double)
 
   //get the length of this vector
-  lazy val length = Math.sqrt(this dot this) //potential bug faulty length calculation
+  lazy val length: Double = Math.sqrt(this dot this) //potential bug faulty length calculation
 
   //get a vector in the direction of this vector that has a length of 1
-  def normalize = if (length != 0) Vector3D(this.x / length, this.y / length, this.z / length) else Vector3D(0, 0, 0)
+  def normalize: Vector3D = if (length != 0) Vector3D(this.x / length, this.y / length, this.z / length) else Vector3D(0, 0, 0)
 
 
-  // Distamce between two vectors
-  def distance(other: Vector3D) = (this - other).length
+  // Distance between two vectors
+  def distance(other: Vector3D): Double = (this - other).length
 
   // Return a copy of this vector
-  def copy = Vector3D(this.x, this.y, this.z)
+  def copy: Vector3D = Vector3D(this.x, this.y, this.z)
   //reversing functions
-  def reverseX = new Vector3D(-this.x, this.y, this.z)
-  def reverseY = new Vector3D(this.x, -this.y, this.z)
-  def reverseZ = new Vector3D(this.x, this.y, -this.z)
+  def reverseX: Vector3D = Vector3D(-this.x, this.y, this.z)
+  def reverseY: Vector3D = Vector3D(this.x, -this.y, this.z)
+  def reverseZ: Vector3D = Vector3D(this.x, this.y, -this.z)
 
   //dot product operation of this and other
   def dot(other: Vector3D): Double = this.x * other.x + this.y * other.y + this.z * other.z
@@ -75,8 +81,8 @@ case class Vector3D(x: Double, y: Double, z: Double) {
     )
 
 
-  override def toString =
-    "x: "+this.x + ", y: "+this.y + ", z: "+this.z
+  override def toString: String =
+    "x: " + this.x + ", y: " + this.y + ", z: " + this.z
 }
 
 class RotationMatrix3D(xtilt: Double, ytilt: Double, ztilt: Double){
@@ -85,13 +91,13 @@ class RotationMatrix3D(xtilt: Double, ytilt: Double, ztilt: Double){
     this(0,0,0)
     this.mat = array
 
-  val (sinx, cosx) = (sin(xtilt), cos(xtilt))
-  val (siny, cosy) = (sin(ytilt), cos(ytilt))
-  val (sinz, cosz) = (sin(ztilt), cos(ztilt))
+  private val (sinx, cosx) = (sin(xtilt), cos(xtilt))
+  private val (siny, cosy) = (sin(ytilt), cos(ytilt))
+  private val (sinz, cosz) = (sin(ztilt), cos(ztilt))
   //println("cos,sin values are for x,y,z tilts: ")
   //println(sinx + " "+ cosx + " " + siny + " " + cosy + " " + sinz + " " + cosz)
   //Rotational matrix based on x,y and z tilts (roll, pitch and yaw)
-  var mat: Array[Array[Double]] = Array(
+  private var mat: Array[Array[Double]] = Array(
     Array(cosy*cosz, sinx*siny*cosz-cosx*sinz, cosx*siny*cosz+sinx*sinz),
     Array(cosy*sinz, sinx*siny*sinz+cosx*cosz, cosx*siny*sinz-sinx*cosz),
     Array(  -siny,          sinx*cosy,                  cosx*cosy      )
@@ -101,6 +107,7 @@ class RotationMatrix3D(xtilt: Double, ytilt: Double, ztilt: Double){
   //mat.foreach(_.zipWithIndex.foreach((a,i) => println(i+1 + ": " + a)))
 
   //Produces a vector that has rotations applied to it.
+  @targetName("timesVector")
   def *(vec: Vector3D): Vector3D =
     val m1 = mat(0)
     val m2 = mat(1)

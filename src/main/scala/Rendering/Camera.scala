@@ -10,7 +10,7 @@ import RayMath.{Ray, RotationMatrix3D, Vector3D}
  */
 
 class Camera(initialPos: Vector3D, private val fov: Double):
-  var pos   = initialPos.copy
+  var pos: Vector3D = initialPos.copy
   var pitch: Double = 0
   var yaw: Double   = 0
   var focalDistance = 1.0
@@ -18,7 +18,7 @@ class Camera(initialPos: Vector3D, private val fov: Double):
 
   private val canvasWidth = Settings.VIEWPORT_WIDTH / Settings.VIEWPORT_PIXEL_SIZE
   private val canvasHeight = Settings.VIEWPORT_HEIGHT / Settings.VIEWPORT_PIXEL_SIZE
-  private val aspectRatio = (canvasHeight.toFloat / canvasWidth.toFloat)
+  private val aspectRatio = canvasHeight.toFloat / canvasWidth.toFloat
 
 
   def rotationMatrix: RotationMatrix3D = RotationMatrix3D(pitch.toRadians, yaw.toRadians, 0)
@@ -27,8 +27,8 @@ class Camera(initialPos: Vector3D, private val fov: Double):
   def getRay(screenX: Int, screenY: Int): Ray =
     val rm = RotationMatrix3D(this.pitch.toRadians,this.yaw.toRadians,0)
 
-    val aspectRatio = (canvasHeight.toFloat / canvasWidth.toFloat)
-    // Use the aspectratio and the fov to calculate vectors that point to the top left corner of the viewport
+    val aspectRatio = canvasHeight.toFloat / canvasWidth.toFloat
+    // Use the aspect ratio and the fov to calculate vectors that point to the top left corner of the viewport
 
     val sideLength = Math.sin(Math.PI / 2) * focalDistance / Math.sin((Math.PI - this.fov) / 2)
     val leftEdge = RotationMatrix3D(0,-fov/2,0) * Vector3D(0,0,sideLength)

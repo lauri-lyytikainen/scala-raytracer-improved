@@ -4,10 +4,8 @@ import scalafx.scene.canvas.GraphicsContext
 
 import java.awt.image.BufferedImage
 import scala.collection.mutable.Stack
-import scalafx.scene.paint.Color
 import Gui.Settings
-import RayMath.{Ray, RayHit, Vector3D}
-import Solids.{Sphere, Triangle, Model}
+import RayMath.{Ray, Vector3D}
 import scalafx.embed.swing.SwingFXUtils
 
 import scala.collection.mutable
@@ -20,8 +18,8 @@ object Renderer:
 
     val startTime = System.nanoTime()
 
-    val w = (Settings.VIEWPORT_WIDTH / Settings.VIEWPORT_PIXEL_SIZE).toInt
-    val h = (Settings.VIEWPORT_HEIGHT / Settings.VIEWPORT_PIXEL_SIZE).toInt
+    val w = Settings.VIEWPORT_WIDTH / Settings.VIEWPORT_PIXEL_SIZE
+    val h = Settings.VIEWPORT_HEIGHT / Settings.VIEWPORT_PIXEL_SIZE
 
     val chunkWidth = w / Settings.RENDERING_CHUNKS
     val chunkHeight = h / Settings.RENDERING_CHUNKS
@@ -70,8 +68,8 @@ object Renderer:
     val timeTaken = (endTime - startTime) / 1000000.0
     println(s"Frame $currentFrame took $timeTaken ms")
 
-  def renderChunk(bufferedImage: BufferedImage, startX: Int, startY: Int, w: Int, h: Int, frameCount: Int): Unit =
-    val coords = for
+  private def renderChunk(bufferedImage: BufferedImage, startX: Int, startY: Int, w: Int, h: Int, frameCount: Int): Unit =
+    val coords: Unit = for
       x <- startX until startX + w
       y <- startY until startY + h
     do
@@ -104,7 +102,7 @@ object Renderer:
 
     var maxBounces = Settings.MAX_BOUNCE_LIMIT
     var bounce = 0
-    while(bounce < maxBounces) do
+    while bounce < maxBounces do
       val rayHit = world.get.traceRay(ray)
       if rayHit.isDefined then
 
@@ -113,7 +111,7 @@ object Renderer:
           return norm
 
         ray.origin = rayHit.get.hitPos + rayHit.get.normal * 0.000001
-        val diffuseDir = (rayHit.get.normal + randomDiffuseDirection(rayHit.get.normal)) // FIXME: Might need normalization
+        val diffuseDir = rayHit.get.normal + randomDiffuseDirection(rayHit.get.normal)
         val specularDir = ray.direction.reflect(rayHit.get.normal)
 
         val material = rayHit.get.solid.material
@@ -126,7 +124,7 @@ object Renderer:
 
         val emittedLight = material.emissionColor * material.emissionStrength
         incomingLight = incomingLight + rayColor * emittedLight
-        rayColor = rayColor * material.color.lerp(material.specularColor, isSpecularBounce);
+        rayColor = rayColor * material.color.lerp(material.specularColor, isSpecularBounce)
         bounce += 1
       else
         maxBounces = -1

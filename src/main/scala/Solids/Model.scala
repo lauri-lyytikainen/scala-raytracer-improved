@@ -1,8 +1,9 @@
 package Solids
 
-import RayMath.{Ray, RayHit, RotationMatrix3D, Vector3D}
+import RayMath.{Ray, RotationMatrix3D, Vector3D}
 import Rendering.Material
 
+import scala.collection.mutable
 import scala.io.Source
 import scala.io.BufferedSource
 import scala.collection.mutable.Buffer
@@ -19,7 +20,7 @@ class Model(fileName: String, position: Vector3D,  rm: RotationMatrix3D, size: D
 
   this.rotationMatrix = rm
 
-  private val triangles: Buffer[Triangle] = Buffer[Triangle]()
+  private val triangles: mutable.Buffer[Triangle] = mutable.Buffer[Triangle]()
 
   private val boundingSphere: Sphere = new Sphere(position, 0, material)
 
@@ -28,7 +29,7 @@ class Model(fileName: String, position: Vector3D,  rm: RotationMatrix3D, size: D
     throw new Exception("File not found")
   else
     //load the file
-    val vertices = Buffer[Vector3D]()
+    val vertices = mutable.Buffer[Vector3D]()
     var longestDistance = 0.0
     for (line <- file.getLines()) do
       //parse the line

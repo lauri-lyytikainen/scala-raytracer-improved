@@ -13,4 +13,4 @@ class RayHit(val ray: Ray, val solid: Solid, val hitPos: Vector3D):
   
   val normal: Vector3D = this.solid.normalAt(this.hitPos)
   
-  override def toString = "RayHit: " + this.ray + " " + this.solid + " " + this.hitPos
+  override def toString: String = "RayHit: " + this.ray + " " + this.solid + " " + this.hitPos

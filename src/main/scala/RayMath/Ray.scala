@@ -10,4 +10,3 @@ package RayMath
 class Ray(var origin: Vector3D, var direction: Vector3D):
     if direction.length != 1 then
         this.direction = direction.normalize
-

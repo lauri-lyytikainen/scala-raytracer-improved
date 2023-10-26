@@ -4,17 +4,14 @@ import RayMath.{Ray, RayHit, Vector3D}
 import Solids.Solid
 
 import scala.collection.mutable
-
-//import scalafx.scene.paint.Color
-
 import scala.collection.mutable.Buffer
 
 /**
- * Represents a scene with a camera, a list of solids, and a list of lights.
+ * Represents a scene with a camera and a list of solids
  */
 
 class World():
-  val camera = new Camera(new Vector3D(0, 0, 0), Math.toRadians(50))
+  val camera = new Camera(Vector3D(0, 0, 0), Math.toRadians(50))
   
   private val solids = mutable.Buffer[Solid]()
 
@@ -22,7 +19,6 @@ class World():
     solids += solid
 
   def traceRay(ray: Ray): Option[RayHit] =
-
     var closestHit: Option[RayHit] = None
     for solid <- solids do
       var hit: Option[Vector3D] = None
