@@ -7,20 +7,21 @@ import scala.io.Source
 import scala.io.BufferedSource
 import scala.collection.mutable.Buffer
 
+/**
+ * A model is a collection of triangles that make up a 3D object
+ * @param fileName The name of the obj file to load the model from
+ * @param position The position of the model
+ * @param rm The rotation matrix of the model
+ * @param size The size of the model
+ * @param material The material of the model
+ */
 class Model(fileName: String, position: Vector3D,  rm: RotationMatrix3D, size: Double, material: Material) extends Solid(position, material):
 
   this.rotationMatrix = rm
 
-  // Make a datastore for the triangles
+  private val triangles: Buffer[Triangle] = Buffer[Triangle]()
 
-  val triangles: Buffer[Triangle] = Buffer[Triangle]()
-
-  // Load the model from the file
-
-  //first check if a file exists
-  //if it does, load it
-
-  val boundingSphere: Sphere = new Sphere(position, 0, material)
+  private val boundingSphere: Sphere = new Sphere(position, 0, material)
 
   val file: BufferedSource = Source.fromResource(fileName)
   if file.isEmpty then
@@ -63,13 +64,6 @@ class Model(fileName: String, position: Vector3D,  rm: RotationMatrix3D, size: D
     this.material.color
 
   override def calculateIntersection(ray: Ray): Option[Vector3D] =
-    //check if the ray intersects any of the triangles
-    //if it does, return the closest intersection
-    //if it doesn't, return None
-
-//    if boundingSphere.calculateIntersection(ray).isEmpty then
-//      return None
-
     var closestHit: Option[Vector3D] = None
     for (triangle <- triangles) do
       val hit = triangle.calculateIntersection(ray)

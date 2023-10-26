@@ -10,11 +10,11 @@ class Triangle(val v1: Vector3D, val v2: Vector3D, val v3: Vector3D, material: M
     val edge2 = v3 - v1
     edge1.cross(edge2).normalize
 
-  def normalAt(point: Vector3D): Vector3D =
+  override def normalAt(point: Vector3D): Vector3D =
     normal
 
 
-  def calculateIntersection(ray: Ray): Option[Vector3D] =
+  override def calculateIntersection(ray: Ray): Option[Vector3D] =
     // calculate the intersection point
     // the triangle is defined by 3 points in clockwise order
 
@@ -50,18 +50,15 @@ class Triangle(val v1: Vector3D, val v2: Vector3D, val v3: Vector3D, material: M
 
   override def getTextureColor(point: Vector3D): Vector3D = this.material.color
 
+  /**
+   * Calculates the distance from the plane of the triangle to a point in space
+   * @param pointInSpace the point in space
+   * @return the distance
+   */
   def distanceToPoint(pointInSpace: Vector3D): Double =
-    // Use the plane equation to compute the distance
-    // also check if the point is in the triangle
-
     val d = normal dot v1
     val dist = (normal dot pointInSpace) - d
     if dist < 0 then
       -dist
     else
       dist
-
-
-
-
-

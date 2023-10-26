@@ -32,7 +32,7 @@ class Sphere(initialPosition: Vector3D, var radius: Double, material: Material) 
     else
       None
 
-  def normalAt(point: Vector3D): Vector3D =
+  override def normalAt(point: Vector3D): Vector3D =
     (point - (position)).normalize
 
   override def getTextureColor(point: Vector3D): Vector3D = this.material.color
