@@ -17,7 +17,7 @@ The renderer is written in Scala and uses scalaFX for the GUI
 - Camera fov
 - Stacking images to reduce noise
 
-The renderer uses cpu rendering and is not optimized for speed so it is ver slow
+The renderer uses cpu rendering and is not optimized for speed so it is very slow
 I am interested in continuing this project and porting it to GPU language like CUDA
 
 ## Example Images
