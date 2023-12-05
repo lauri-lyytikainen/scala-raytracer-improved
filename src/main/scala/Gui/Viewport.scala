@@ -10,7 +10,7 @@ import scalafx.scene.paint.Color
 import Gui.Settings
 import RayMath.{RotationMatrix3D, Vector3D}
 import Rendering.{Material, Renderer, World}
-import Solids.{Model, Sphere, Triangle}
+import Solids.{Model, Sphere}
 object Viewport extends JFXApp3:
   private val windowWidth = Settings.WINDOW_WIDTH
   private val windowHeight = Settings.WINDOW_HEIGHT
@@ -18,14 +18,51 @@ object Viewport extends JFXApp3:
   private var currentFrame = 0
 
   val world = new World()
-  world.camera.focalDistance = 5
+  world.camera.focalDistance = 10
   world.camera.dofBlurriness = 0
 
-  val greenMaterial = new Material(Vector3D(0.125, 0.900, 0.125), Vector3D(0, 0, 0), 0, 0.8, 0.6, Vector3D(1, 1, 1))
+  val greenMaterial = new Material(Vector3D(0.125, 0.900, 0.125), Vector3D(0, 0, 0), 0, 0.3, 0.3, Vector3D(1, 1, 1))
+  val redMaterial = new Material(Vector3D(0.9, 0.125, 0.125), Vector3D(0, 0, 0), 0, 0.3, 0.3, Vector3D(1, 1, 1))
+  val blueMaterial = new Material(Vector3D(0.125, 0.125, 0.9), Vector3D(0, 0, 0), 0, 0.3, 0.3, Vector3D(1, 1, 1))
   val lightMaterial = new Material(Vector3D(0, 0, 0), Vector3D(0.9, 0.8, 0.6), 5)
 
-  world.addSolid(new Sphere(Vector3D(0,0,5),1, greenMaterial))
-  world.addSolid(new Sphere(Vector3D(3, 5, 25), 1, lightMaterial))
+  val whiteMaterial = new Material(Vector3D(0.9,0.9,0.9), Vector3D(0, 0, 0), 0, 0.4, 0.4, Vector3D(1, 1, 1))
+  val mirrorMaterial = new Material(Vector3D(0.9,0.9,0.9), Vector3D(0, 0, 0), 0.9, 0.9, 0.9, Vector3D(1, 1, 1))
+
+
+//  world.addSolid(new Sphere(Vector3D(0,0,5),1, greenMaterial))
+  world.addSolid(new Sphere(Vector3D(3, 5, 0), 1, lightMaterial))
+
+  val floor = new Model(
+    "plane.obj",
+    Vector3D(0, -1, 10),
+    RotationMatrix3D(0, 0, 0),
+    20,
+    whiteMaterial,
+  )
+
+  world.addSolid(floor)
+
+  val redBall = new Sphere(
+    Vector3D(-2, 0, 10),
+    1,
+    redMaterial
+  )
+  world.addSolid(redBall)
+
+  val greenBall = new Sphere(
+    Vector3D(0, 0, 10),
+    1,
+    greenMaterial
+  )
+  world.addSolid(greenBall)
+
+  val blueBall = new Sphere(
+    Vector3D(2, 0, 10),
+    1,
+    blueMaterial
+  )
+  world.addSolid(blueBall)
 
   Renderer.world = Some(world)
 

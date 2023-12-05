@@ -13,7 +13,6 @@ class Triangle(val v1: Vector3D, val v2: Vector3D, val v3: Vector3D, material: M
   override def normalAt(point: Vector3D): Vector3D =
     normal
 
-
   override def calculateIntersection(ray: Ray): Option[Vector3D] =
     // calculate the intersection point
     // the triangle is defined by 3 points in clockwise order
@@ -44,9 +43,6 @@ class Triangle(val v1: Vector3D, val v2: Vector3D, val v3: Vector3D, material: M
       // this means that there is a line intersection
       // but not a ray intersection
       None
-
-
-
 
   override def getTextureColor(point: Vector3D): Vector3D = this.material.color
 

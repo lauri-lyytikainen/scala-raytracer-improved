@@ -94,17 +94,12 @@ class RotationMatrix3D(xtilt: Double, ytilt: Double, ztilt: Double){
   private val (sinx, cosx) = (sin(xtilt), cos(xtilt))
   private val (siny, cosy) = (sin(ytilt), cos(ytilt))
   private val (sinz, cosz) = (sin(ztilt), cos(ztilt))
-  //println("cos,sin values are for x,y,z tilts: ")
-  //println(sinx + " "+ cosx + " " + siny + " " + cosy + " " + sinz + " " + cosz)
   //Rotational matrix based on x,y and z tilts (roll, pitch and yaw)
   private var mat: Array[Array[Double]] = Array(
     Array(cosy*cosz, sinx*siny*cosz-cosx*sinz, cosx*siny*cosz+sinx*sinz),
     Array(cosy*sinz, sinx*siny*sinz+cosx*cosz, cosx*siny*sinz-sinx*cosz),
     Array(  -siny,          sinx*cosy,                  cosx*cosy      )
   )
-
-  //debug for matrix
-  //mat.foreach(_.zipWithIndex.foreach((a,i) => println(i+1 + ": " + a)))
 
   //Produces a vector that has rotations applied to it.
   @targetName("timesVector")
